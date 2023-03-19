@@ -222,13 +222,6 @@ class Student:
         save_btn5=Button(button_l5,text="Take Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn5.grid(row=2,column=0)
 
-         #button update photo sample
-        button_l6=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
-        button_l6.place(x=400,y=530,width=320,height=40)
-
-        save_btn6=Button(button_l6,text="Update Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
-        save_btn6.grid(row=1,column=1)
-
 
 
 
