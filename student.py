@@ -55,7 +55,7 @@ class Student:
         main_frame.place(x=35,y=18,width=1455,height=610)
 
 
-       #left  labelframe
+       #left top labelframe
         lf_l=Label(bglbl,bd=1,relief=RIDGE,font=("times new roman",20),bg="white",fg="black")
         lf_l.place(x=45,y=28,width=710,height=120)
 
@@ -109,6 +109,147 @@ class Student:
         #right labelframe
         lf_r=Label(bglbl,bd=1,relief=RIDGE,font=("times new roman",30),bg="white",fg="black")
         lf_r.place(x=770,y=28,width=710,height=588)
+
+        #left bottom label
+        lf_b=Label(bglbl,bd=1,relief=RIDGE,font=("times new roman",20),bg="white",fg="black")
+        lf_b.place(x=45,y=153,width=710,height=464)
+
+         #student id label
+        sid_label=Label(lf_b,text=" Student ID ",font=("times new roman",17),bg="white",fg="black")
+        sid_label.grid(row=0,column=0,padx=2,pady=10,sticky=W)
+
+         #student id entry
+        stud_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        stud_entry.grid(row=0,column=1,padx=0,pady=0,sticky=W)
+
+         #student name label
+        sname_label=Label(lf_b,text=" Student Name ",font=("times new roman",17),bg="white",fg="black")
+        sname_label.grid(row=0,column=2,padx=2,pady=10,sticky=W)
+
+         #student name entry
+        sname_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        sname_entry.grid(row=0,column=3,padx=0,pady=0,sticky=W)
+
+        #class label
+        class_label=Label(lf_b,text=" Class ",font=("times new roman",17),bg="white",fg="black")
+        class_label.grid(row=1,column=0,padx=2,pady=10,sticky=W)
+
+         #class entry
+        class_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        class_entry.grid(row=1,column=1,padx=0,pady=0,sticky=W)
+
+         #section label
+        sec_label=Label(lf_b,text=" Section ",font=("times new roman",17),bg="white",fg="black")
+        sec_label.grid(row=1,column=2,padx=2,pady=10,sticky=W)
+
+         #section entry
+        sec_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        sec_entry.grid(row=1,column=3,padx=0,pady=0,sticky=W)
+
+         #DOB label
+        dob_label=Label(lf_b,text=" DOB ",font=("times new roman",17),bg="white",fg="black")
+        dob_label.grid(row=2,column=0,padx=2,pady=10,sticky=W)
+
+         #DOB entry
+        dob_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        dob_entry.grid(row=2,column=1,padx=0,pady=0,sticky=W)
+
+         #Email label
+        email_label=Label(lf_b,text=" Email ",font=("times new roman",17),bg="white",fg="black")
+        email_label.grid(row=2,column=2,padx=2,pady=10,sticky=W)
+
+         #Email entry
+        email_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        email_entry.grid(row=2,column=3,padx=0,pady=0,sticky=W)
+
+         #phone label
+        phone_label=Label(lf_b,text=" Phone ",font=("times new roman",17),bg="white",fg="black")
+        phone_label.grid(row=3,column=0,padx=2,pady=10,sticky=W)
+
+         #phone entry
+        phone_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        phone_entry.grid(row=3,column=1,padx=0,pady=0,sticky=W)
+
+        #address label
+        address_label=Label(lf_b,text=" Address ",font=("times new roman",17),bg="white",fg="black")
+        address_label.grid(row=3,column=2,padx=2,pady=10,sticky=W)
+
+         #address entry
+        address_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        address_entry.grid(row=3,column=3,padx=0,pady=0,sticky=W)
+
+        #radio buttons
+        radiobtn1=ttk.Radiobutton(lf_b,text="Take Photo Sample",value="Yes")
+        radiobtn1.grid(row=5,column=1)
+
+         #radio buttons
+        radiobtn2=ttk.Radiobutton(lf_b,text="No Photo Sample",value="No")
+        radiobtn2.grid(row=5,column=3)
+
+        #button sve
+        button_l=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l.place(x=64,y=430,width=320,height=40)
+
+        save_btn=Button(button_l,text="Save",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn.grid(row=0,column=0)
+
+        #button update
+        button_l2=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l2.place(x=400,y=430,width=320,height=40)
+
+        save_btn2=Button(button_l2,text="Update",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn2.grid(row=0,column=1)
+
+         #button delete
+        button_l3=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l3.place(x=64,y=480,width=320,height=40)
+
+        save_btn3=Button(button_l3,text="Delete",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn3.grid(row=1,column=0)
+
+         #button reset
+        button_l4=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l4.place(x=400,y=480,width=320,height=40)
+
+        save_btn4=Button(button_l4,text="Reset",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn4.grid(row=1,column=1)
+
+
+         #button take photo sample
+        button_l5=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l5.place(x=64,y=530,width=320,height=40)
+
+        save_btn5=Button(button_l5,text="Take Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn5.grid(row=2,column=0)
+
+         #button update photo sample
+        button_l6=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
+        button_l6.place(x=400,y=530,width=320,height=40)
+
+        save_btn6=Button(button_l6,text="Update Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn6.grid(row=1,column=1)
+
+
+
+
+
+
+
+        
+
+       
+
+
+
+
+
+
+
+
+
+
+
+        
 
         
 
