@@ -228,6 +228,9 @@ class Student:
 
         save_btn6=Button(button_l6,text="Update Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn6.grid(row=1,column=1)
+        
+          
+        
 
         
 
