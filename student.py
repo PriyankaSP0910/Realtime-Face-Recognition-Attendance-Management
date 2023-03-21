@@ -213,75 +213,77 @@ class Student:
 
         save_btn4=Button(button_l4,text="Reset",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn4.grid(row=1,column=1)
-        
-        
+
+
          #button take photo sample
         button_l5=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
         button_l5.place(x=64,y=530,width=320,height=40)
 
         save_btn5=Button(button_l5,text="Take Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn5.grid(row=2,column=0)
-        
-         
+
          #button update photo sample
         button_l6=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
         button_l6.place(x=400,y=530,width=320,height=40)
 
         save_btn6=Button(button_l6,text="Update Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn6.grid(row=1,column=1)
-       
-        
-          
-       
+
+        right_frame=Frame(lf_r,bd=1,relief=RIDGE,bg="white")
+        right_frame.place(x=10,y=10,width=688,height=66)
+
+        search_entry=ttk.Entry(right_frame,width=45,font=("times new roman",15))
+        search_entry.grid(padx=5,pady=15,sticky=W)
+
+        search_button=Button(right_frame,text="Search",width=18,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        search_button.grid(row=0,column=1)
+
+        rightb_frame=Frame(lf_r,bd=1,relief=RIDGE,bg="white")
+        rightb_frame.place(x=10,y=83,width=688,height=497)
+
+        #bottom scrollbar
+        scroll_x=Scrollbar(rightb_frame,orient=HORIZONTAL)
+        scroll_y=Scrollbar(rightb_frame,orient=VERTICAL)
 
 
-        
-       
-        
+        self.student_table=ttk.Treeview(rightb_frame,column=("dep","sem","course","year","id","name","class","section","dob","email","phone","address","photo"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
 
-        
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_x.config(command=self.student_table.xview)
+        scroll_y.config(command=self.student_table.yview)
 
-        
-        
-       
+        self.student_table.heading("dep",text="Department")
+        self.student_table.heading("sem",text="Semester")
+        self.student_table.heading("course",text="Course")
+        self.student_table.heading("year",text="Year")
+        self.student_table.heading("id",text="ID")
+        self.student_table.heading("name",text="Name")
+        self.student_table.heading("class",text="Class")
+        self.student_table.heading("section",text="Section")
+        self.student_table.heading("dob",text="DOB")
+        self.student_table.heading("email",text="Email")
+        self.student_table.heading("phone",text="Phone")
+        self.student_table.heading("address",text="Address")
+        self.student_table.heading("photo",text="Photo")
+        self.student_table["show"]="headings"
 
+        self.student_table.pack(fill=BOTH,expand=1)
 
-
-
-
-
-
-        
-
-       
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-
-
-         
-
-
-
-
-
-
-
-
-
-
-
+        self.student_table.column("dep",width=167)
+        self.student_table.column("sem",width=167)
+        self.student_table.column("course",width=167)
+        self.student_table.column("year",width=167)
+        self.student_table.column("id",width=167)
+        self.student_table.column("name",width=167)
+        self.student_table.column("class",width=167)
+        self.student_table.column("section",width=167)
+        self.student_table.column("dob",width=167)
+        self.student_table.column("email",width=167)
+        self.student_table.column("phone",width=167)
+        self.student_table.column("address",width=167)
+        self.student_table.column("photo",width=167)
+        self.student_table["show"]="headings"
 
 
         
