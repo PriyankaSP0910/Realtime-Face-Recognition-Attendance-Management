@@ -2,12 +2,32 @@ from tkinter import*        #import tkinter
 from tkinter import ttk     #ttk is module used to style tkinter widgets
 from PIL import Image,ImageTk      #PILLOW LIBRARY which helps in image processing (editing,cropping image)
 from PIL import*
+from tkinter import messagebox
+import mysql.connector
 
 class Student:
     def __init__(self,root):    #calling constructor #root is root window
         self.root=root
         self.root.geometry("1530x790+0+0")    #setting window width and height where 0,0 symbolize x,y axis
         self.root.title("Facial recognition Attendence Management System")     #setting the title
+
+
+        #*************************************************************************************************
+        self.var_dep=StringVar()
+        self.var_sem=StringVar()
+        self.var_course=StringVar()
+        self.var_year=StringVar()
+        self.var_id=StringVar()
+        self.var_name=StringVar()
+        self.var_class=StringVar()
+        self.var_section=StringVar()
+        self.var_dob=StringVar()
+        self.var_email=StringVar()
+        self.var_phone=StringVar()
+        self.var_address=StringVar()
+       
+  
+
 
         img=Image.open(r"C:\Users\91900\Desktop\face_recognition system\college_images\header.png")   #diplay image
         img=img.resize((1530,85),Image.Resampling.LANCZOS)    #we resized width and height of image to 500 and 130, ANTIALIAS ued to return resized images
@@ -67,7 +87,7 @@ class Student:
 
 
         #department
-        dep_combo=ttk.Combobox(lf_l,font=("times new roman",15),width=19,state="read only")                             #to make combobox
+        dep_combo=ttk.Combobox(lf_l,font=("times new roman",15),textvariable=self.var_dep,width=19,state="read only")                             #to make combobox
         dep_combo["values"]=("MCA","Computer Science","ECE","IT","Civil","Mechanical","Mtech")   #pass value to combobox in tuple
         dep_combo.current(0)                                                                            #default value is select department
         dep_combo.grid(row=0,column=1,padx=2,pady=10,sticky=W)                                     #to make sure the combobox is in front of label
@@ -78,7 +98,7 @@ class Student:
 
 
         #semester
-        dep_combo1=ttk.Combobox(lf_l,font=("times new roman",15),width=19,state="read only")                             #to make combobox
+        dep_combo1=ttk.Combobox(lf_l,font=("times new roman",15),textvariable=self.var_sem,width=19,state="read only")                             #to make combobox
         dep_combo1["values"]=("Semester 1","Semester 2","Semester 3","Semester 4","Semester 5","Semester 6")   #pass value to combobox in tuple
         dep_combo1.current(0)                                                                            #default value is select department
         dep_combo1.grid(row=0,column=3,padx=2,pady=10,sticky=W)                                     #to make sure the combobox is in front of label
@@ -90,13 +110,13 @@ class Student:
 
 
         #Courses
-        dep_combo2=ttk.Combobox(lf_l,font=("times new roman",15),width=19,state="read only")                             #to make combobox
+        dep_combo2=ttk.Combobox(lf_l,font=("times new roman",15),textvariable=self.var_course,width=19,state="read only")                             #to make combobox
         dep_combo2["values"]=("C Programming","Environmental Studies","Chemistry","Physics","Kannada","Legislator")   #pass value to combobox in tuple
         dep_combo2.current(0)                                                                            #default value is select department
         dep_combo2.grid(row=1,column=1,padx=2,pady=10,sticky=W)     
         
         #year
-        sem_label3=Label(lf_l,text=" Year ",font=("times new roman",17),bg="white",fg="black")
+        sem_label3=Label(lf_l,text=" Year ",font=("times new roman",17),textvariable=self.var_year,bg="white",fg="black")
         sem_label3.grid(row=1,column=2,padx=2,pady=10,sticky=W)
 
 
@@ -119,7 +139,7 @@ class Student:
         sid_label.grid(row=0,column=0,padx=2,pady=10,sticky=W)
 
          #student id entry
-        stud_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        stud_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_id,font=("times new roman",15))
         stud_entry.grid(row=0,column=1,padx=0,pady=0,sticky=W)
 
          #student name label
@@ -127,7 +147,7 @@ class Student:
         sname_label.grid(row=0,column=2,padx=2,pady=10,sticky=W)
 
          #student name entry
-        sname_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        sname_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_name,font=("times new roman",15))
         sname_entry.grid(row=0,column=3,padx=0,pady=0,sticky=W)
 
         #class label
@@ -135,7 +155,7 @@ class Student:
         class_label.grid(row=1,column=0,padx=2,pady=10,sticky=W)
 
          #class entry
-        class_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        class_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_class,font=("times new roman",15))
         class_entry.grid(row=1,column=1,padx=0,pady=0,sticky=W)
 
          #section label
@@ -143,7 +163,7 @@ class Student:
         sec_label.grid(row=1,column=2,padx=2,pady=10,sticky=W)
 
          #section entry
-        sec_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        sec_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_section,font=("times new roman",15))
         sec_entry.grid(row=1,column=3,padx=0,pady=0,sticky=W)
 
          #DOB label
@@ -151,7 +171,7 @@ class Student:
         dob_label.grid(row=2,column=0,padx=2,pady=10,sticky=W)
 
          #DOB entry
-        dob_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        dob_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_dob,font=("times new roman",15))
         dob_entry.grid(row=2,column=1,padx=0,pady=0,sticky=W)
 
          #Email label
@@ -159,7 +179,7 @@ class Student:
         email_label.grid(row=2,column=2,padx=2,pady=10,sticky=W)
 
          #Email entry
-        email_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        email_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_email,font=("times new roman",15))
         email_entry.grid(row=2,column=3,padx=0,pady=0,sticky=W)
 
          #phone label
@@ -167,7 +187,7 @@ class Student:
         phone_label.grid(row=3,column=0,padx=2,pady=10,sticky=W)
 
          #phone entry
-        phone_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        phone_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_phone,font=("times new roman",15))
         phone_entry.grid(row=3,column=1,padx=0,pady=0,sticky=W)
 
         #address label
@@ -175,22 +195,27 @@ class Student:
         address_label.grid(row=3,column=2,padx=2,pady=10,sticky=W)
 
          #address entry
-        address_entry=ttk.Entry(lf_b,width=20,font=("times new roman",15))
+        address_entry=ttk.Entry(lf_b,width=20,textvariable=self.var_address,font=("times new roman",15))
         address_entry.grid(row=3,column=3,padx=0,pady=0,sticky=W)
 
         #radio buttons
-        radiobtn1=ttk.Radiobutton(lf_b,text="Take Photo Sample",value="Yes")
+      
+
+        self.var_radio1=StringVar()
+        radiobtn1=ttk.Radiobutton(lf_b,text="Take Photo Sample",variable=self.var_radio1,value="Yes")
         radiobtn1.grid(row=5,column=1)
 
          #radio buttons
-        radiobtn2=ttk.Radiobutton(lf_b,text="No Photo Sample",value="No")
+        
+        
+        radiobtn2=ttk.Radiobutton(lf_b,text="No Photo Sample",variable=self.var_radio1,value="No")
         radiobtn2.grid(row=5,column=3)
 
         #button sve
         button_l=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
         button_l.place(x=64,y=430,width=320,height=40)
 
-        save_btn=Button(button_l,text="Save",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn=Button(button_l,text="Save",command=self.add_data,width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn.grid(row=0,column=0)
 
         #button update
@@ -285,8 +310,35 @@ class Student:
         self.student_table.column("photo",width=167)
         self.student_table["show"]="headings"
 
+#****************************************************************************************************
 
-        
+    def add_data(self):
+        if self.var_name.get()=="":    #if name or id field is empty display error message
+            messagebox.showerror("Error","Please fill the Fields",parent=self.root)   #show error in root window only with message
+        else:
+            try:
+                conn=mysql.connector.connect(host="localhost",user="root",password="root",database="face")
+                my_cursor=conn.cursor()
+                my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+                                                                                                    self.var_dep.get(),
+                                                                                                    self.var_sem.get(),
+                                                                                                    self.var_course.get(),
+                                                                                                    self.var_id.get(),
+                                                                                                    self.var_name.get(),
+                                                                                                    self.var_class.get(),
+                                                                                                    self.var_section.get(),
+                                                                                                    self.var_dob.get(),
+                                                                                                    self.var_email.get(),
+                                                                                                    self.var_phone.get(),
+                                                                                                    self.var_address.get(),
+                                                                                                    self.var_radio1.get()
+                                                                                                    ))
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("Success","Student deatils inserted successfully!",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
 
 
 if __name__== "__main__":   #used to call main 
