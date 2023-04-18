@@ -116,12 +116,12 @@ class Student:
         dep_combo2.grid(row=1,column=1,padx=2,pady=10,sticky=W)     
         
         #year
-        sem_label3=Label(lf_l,text=" Year ",font=("times new roman",17),textvariable=self.var_year,bg="white",fg="black")
+        sem_label3=Label(lf_l,text=" Year ",font=("times new roman",17),bg="white",fg="black")
         sem_label3.grid(row=1,column=2,padx=2,pady=10,sticky=W)
 
 
-        #Courses
-        dep_combo3=ttk.Combobox(lf_l,font=("times new roman",15),width=19,state="read only")                             #to make combobox
+        #year 
+        dep_combo3=ttk.Combobox(lf_l,font=("times new roman",15),textvariable=self.var_year,width=19,state="read only")                             #to make combobox
         dep_combo3["values"]=("2018-2019","2019-2020","2020-2021","2021-2022","2022-2023")   #pass value to combobox in tuple
         dep_combo3.current(0)                                                                            #default value is select department
         dep_combo3.grid(row=1,column=3,padx=2,pady=10,sticky=W)                                     #to make sure the combobox is in front of label
@@ -211,35 +211,23 @@ class Student:
         radiobtn2=ttk.Radiobutton(lf_b,text="No Photo Sample",variable=self.var_radio1,value="No")
         radiobtn2.grid(row=5,column=3)
 
-        #button sve
+        #button save
         button_l=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
-        button_l.place(x=64,y=430,width=320,height=40)
+        button_l.place(x=64,y=430,width=655,height=40)
 
-        save_btn=Button(button_l,text="Save",command=self.add_data,width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
-        save_btn.grid(row=0,column=0)
+        save_btn=Button(button_l,text="Save",command=self.add_data,width=59,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn.grid(row=0,column=1)
 
-        #button update
-        button_l2=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
-        button_l2.place(x=400,y=430,width=320,height=40)
-
-        save_btn2=Button(button_l2,text="Update",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
-        save_btn2.grid(row=0,column=1)
+       
 
          #button delete
         button_l3=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
-        button_l3.place(x=64,y=480,width=320,height=40)
+        button_l3.place(x=64,y=480,width=655,height=40)
 
-        save_btn3=Button(button_l3,text="Delete",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
-        save_btn3.grid(row=1,column=0)
+        save_btn3=Button(button_l3,text="Delete",command=self.delete_data,width=59,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn3.grid(row=1,column=1)
 
-         #button reset
-        button_l4=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
-        button_l4.place(x=400,y=480,width=320,height=40)
-
-        save_btn4=Button(button_l4,text="Reset",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
-        save_btn4.grid(row=1,column=1)
-
-
+         
          #button take photo sample
         button_l5=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
         button_l5.place(x=64,y=530,width=320,height=40)
@@ -293,7 +281,7 @@ class Student:
         self.student_table.heading("photo",text="Photo")
         self.student_table["show"]="headings"
 
-        self.student_table.pack(fill=BOTH,expand=1)
+       
 
         self.student_table.column("dep",width=167)
         self.student_table.column("sem",width=167)
@@ -308,7 +296,14 @@ class Student:
         self.student_table.column("phone",width=167)
         self.student_table.column("address",width=167)
         self.student_table.column("photo",width=167)
+     
         self.student_table["show"]="headings"
+
+      
+        self.student_table.pack(fill=BOTH,expand=1)
+        self.student_table.bind("<ButtonRelease>",self.get_cursor)
+        self.fetch_data()
+        
 
 #****************************************************************************************************
 
@@ -319,10 +314,11 @@ class Student:
             try:
                 conn=mysql.connector.connect(host="localhost",user="root",password="root",database="face")
                 my_cursor=conn.cursor()
-                my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+                my_cursor.execute("insert into student_table values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
                                                                                                     self.var_dep.get(),
                                                                                                     self.var_sem.get(),
                                                                                                     self.var_course.get(),
+                                                                                                    self.var_year.get(),
                                                                                                     self.var_id.get(),
                                                                                                     self.var_name.get(),
                                                                                                     self.var_class.get(),
@@ -332,7 +328,9 @@ class Student:
                                                                                                     self.var_phone.get(),
                                                                                                     self.var_address.get(),
                                                                                                     self.var_radio1.get()
+                                                                                                   
                                                                                                     ))
+               
                 conn.commit()
                 conn.close()
                 messagebox.showinfo("Success","Student deatils inserted successfully!",parent=self.root)
@@ -340,7 +338,72 @@ class Student:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
 
 
+#*********************************************fetch data*************************************************************************
+    def fetch_data(self):
+        conn=mysql.connector.connect(host="localhost",user="root",password="root",database="face")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select * from student_table")
+        data=my_cursor.fetchall()
 
+        if len(data)!=0:
+            
+            for i in data:
+                self.student_table.insert("",END,values=i)
+            conn.commit()
+        conn.close()
+
+
+        #*********************************get cursor*************************************
+
+    def get_cursor(self,event=""):
+        cursor_focus=self.student_table.focus()
+        content=self.student_table.item(cursor_focus)
+        data=content["values"]
+        self.var_dep.set(data[0]),
+        self.var_sem.set(data[1]),
+        self.var_course.set(data[2]),
+        self.var_year.set(data[3]),
+        self.var_id.set(data[4]),
+        self.var_name.set(data[5]),
+        self.var_class.set(data[6]),
+        self.var_section.set(data[7]),
+        self.var_dob.set(data[8]),
+        self.var_email.set(data[9]),
+        self.var_phone.set(data[10]),
+        self.var_address.set(data[11]),
+        self.var_radio1.set(data[12])
+
+        #delete function
+    def delete_data(self):
+        if self.var_id.get()=="":
+            messagebox.showerror("Error","Student ID is required to deete data.",parent=self.root)
+        else:
+            try:
+                delete=messagebox.askyesno("Delete Student Data???","Do you want to delete this student data?",parent=self.root)
+                if delete>0:
+                    conn=mysql.connector.connect(host="localhost",user="root",password="root",database="face")
+                    my_cursor=conn.cursor()
+                    sql="delete from student_table where id =%s"
+                    val=(self.var_id.get(),)
+                    my_cursor.execute(sql,val)
+
+                
+                else:
+                    if not delete:
+                        return
+                conn.commit()
+                conn.close()
+                
+                messagebox.showinfo("Delete Student Data???","Student details has been deleted succesfully",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
+
+    
+
+
+    
+    
 if __name__== "__main__":   #used to call main 
     root=Tk()       #Create an instance of tkinter window
     obj=Student(root)
