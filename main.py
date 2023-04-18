@@ -109,7 +109,12 @@ class Face_Recognition_System:
 
 
 
-    if __name__== "__main__":   #used to call main 
+       
+
+       
+
+
+if __name__== "__main__":   #used to call main 
     root=Tk()       #Create an instance of tkinter window
     obj=Face_Recognition_System(root)
     root.mainloop()  #method will loop forever, waiting for events from the user, until the user exits the program 
