@@ -1,7 +1,10 @@
+import os
 from tkinter import*        #import tkinter
 from tkinter import ttk     #ttk is module used to style tkinter widgets
 from PIL import Image,ImageTk      #PILLOW LIBRARY which helps in image processing (editing,cropping image)
 from student import Student
+from train import Train
+from face_recognition import Face_Recognition
 
 class Face_Recognition_System:
     def __init__(self,root):    #calling constructor #root is root window
@@ -62,7 +65,7 @@ class Face_Recognition_System:
         btd=Image.open(r"C:\Users\91900\Desktop\face_recognition system\college_images\train.jpeg")
         btd=btd.resize((220,400),Image.Resampling.LANCZOS)    #we resized width and height of image to 500 and 130, ANTIALIAS ued to return resized images
         self.photoimg4=ImageTk.PhotoImage(btd)          #img stored in a variable self.photoimg 
-        b2=Button(bglbl,image=self.photoimg4,cursor="hand2")
+        b2=Button(bglbl,image=self.photoimg4,cursor="hand2",command=self.train_data)
         b2.place(x=292,y=177,width=220,height=400)
 
 
@@ -70,7 +73,7 @@ class Face_Recognition_System:
         bp=Image.open(r"C:\Users\91900\Desktop\face_recognition system\college_images\photos.jpeg")
         bp=bp.resize((230,400),Image.Resampling.LANCZOS)    #we resized width and height of image to 500 and 130, ANTIALIAS ued to return resized images
         self.photoimg5=ImageTk.PhotoImage(bp)          #img stored in a variable self.photoimg 
-        b3=Button(bglbl,image=self.photoimg5,cursor="hand2")
+        b3=Button(bglbl,image=self.photoimg5,cursor="hand2",command=self.open_img)
         b3.place(x=518,y=177,width=230,height=400)
 
         
@@ -87,7 +90,7 @@ class Face_Recognition_System:
         bfg=Image.open(r"C:\Users\91900\Desktop\face_recognition system\college_images\recog.jpeg")
         bfg=bfg.resize((230,400),Image.Resampling.LANCZOS)    #we resized width and height of image to 500 and 130, ANTIALIAS ued to return resized images
         self.photoimg7=ImageTk.PhotoImage(bfg)          #img stored in a variable self.photoimg 
-        bfg=Button(bglbl,image=self.photoimg7,cursor="hand2")
+        bfg=Button(bglbl,image=self.photoimg7,cursor="hand2",command=self.face_data)
         bfg.place(x=992,y=177,width=230,height=400)
        
 
@@ -99,6 +102,10 @@ class Face_Recognition_System:
         be=Button(bglbl,image=self.photoimg8,cursor="hand2")
         be.place(x=1229,y=177,width=230,height=400)
 
+    #Photos (Gallery) button
+    def open_img(self):
+        os.startfile("data")
+    
 
 
         #***************************************************************************************************8
@@ -106,6 +113,18 @@ class Face_Recognition_System:
     def student_details(self):
         self.new_window=Toplevel(self.root)    #used to open root window in newtab
         self.app=Student(self.new_window)      #passing new window to Student class
+
+    def train_data(self):
+        self.new_window=Toplevel(self.root)    #used to open root window in newtab
+        self.app=Train(self.new_window)      #passing new window to Student class
+
+    def face_data(self):
+        self.new_window=Toplevel(self.root)    #used to open root window in newtab
+        self.app=Face_Recognition(self.new_window)      #passing new window to Student class
+
+
+
+    
 
 
 
