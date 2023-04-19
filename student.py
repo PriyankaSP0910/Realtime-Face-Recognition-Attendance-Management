@@ -4,6 +4,7 @@ from PIL import Image,ImageTk      #PILLOW LIBRARY which helps in image processi
 from PIL import*
 from tkinter import messagebox
 import mysql.connector
+import cv2
 
 class Student:
     def __init__(self,root):    #calling constructor #root is root window
@@ -44,7 +45,7 @@ class Student:
         bglbl.place(x=0,y=85,width=1530,height=750)
 
         #title
-        title=Label(f_lbl,text="Student Management System",font=("Comic Sans MS",22),bg="white",fg="black")
+        title=Label(f_lbl,text="Student Data Management",font=("Comic Sans MS",22),bg="white",fg="black")
         title.place(x=0,y=0,width=1530,height=55)
 
 
@@ -232,7 +233,7 @@ class Student:
         button_l5=Frame(bglbl,bd=1,relief=RIDGE,bg="white")
         button_l5.place(x=64,y=530,width=320,height=40)
 
-        save_btn5=Button(button_l5,text="Take Photo Sample",width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
+        save_btn5=Button(button_l5,text="Take Photo Sample",command=self.generate_dataset,width=28,font=("times new roman",15),bg="#1261A0",fg="white",cursor="hand2")
         save_btn5.grid(row=2,column=0)
 
          #button update photo sample
@@ -398,8 +399,76 @@ class Student:
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
 
+#***********************************************Generate dataset by taking photo samples************************************************************
 
-    
+    def generate_dataset(self):
+        if self.var_id.get()=="":
+            messagebox.showerror("Error","All fields are required",parent=self.root)
+        else:
+            try:
+                conn=mysql.connector.connect(host="localhost",user="root",password="root",database="face")
+                my_cursor=conn.cursor()
+                my_cursor.execute("select * from student_table")
+                myresult=my_cursor.fetchall()
+                id=0
+                for x in myresult:
+                    id+=1
+                my_cursor.execute("update student_table set dep=%s,sem=%s,course=%s,year=%s,name=%s,class=%s,section=%s,dob=%s,email=%s,phone=%s,address=%s,photo=%s where id=%s",(
+                                                                                                                                                                                                    
+                                                                                                                                                                                    self.var_dep.get(),
+                                                                                                                                                                                    self.var_sem.get(),
+                                                                                                                                                                                    self.var_course.get(),
+                                                                                                                                                                                    self.var_year.get(),
+                                                                                                                                                                                    self.var_name.get(),
+                                                                                                                                                                                    self.var_class.get(),
+                                                                                                                                                                                    self.var_section.get(),
+                                                                                                                                                                                    self.var_dob.get(),
+                                                                                                                                                                                    self.var_email.get(),
+                                                                                                                                                                                    self.var_phone.get(),
+                                                                                                                                                                                    self.var_address.get(),
+                                                                                                                                                                                    self.var_radio1.get(),
+                                                                                                                                                                                    self.var_id.get(),
+                                                                                                                                                       ))
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+
+                #---------------Loading Frontal face data from OpenCV------------------------------
+                face_classifier=cv2.CascadeClassifier(r"C:\Users\91900\Desktop\face_recognition system\haarcascade_frontalface_default.xml")
+                
+                def face_cropped(img):
+                    gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+                    faces=face_classifier.detectMultiScale(gray,1.3,5)
+                    #scaling factor 1.3 , minimum neightbor=5 so 1.3 and 5
+
+                    for (x,y,w,h) in faces:
+                        face_cropped=img[y:y+h,x:x+w]
+                        return face_cropped
+
+                cap=cv2.VideoCapture(0)
+                img_id=0
+                while True:
+                    ret,my_frame=cap.read()
+                    if face_cropped(my_frame) is not None:
+                        img_id+=1
+                        face=cv2.resize(face_cropped(my_frame),(450,450))
+                        face=cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
+                        file_name_path="C:\\Users\\91900\Desktop\\face_recognition system\\data\\user."+str(id)+"."+str(img_id)+".jpg"
+                        cv2.imwrite(file_name_path,face)
+                        cv2.putText(face,str(img_id),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,0),2)
+                        cv2.imshow("Cropped Face",face)
+                    
+                    if cv2.waitKey(1)==13 or int(img_id)==50:
+                        break
+                cap.release()
+                cv2.destroyAllWindows()
+                messagebox.showinfo("Result","Generating dataset completed successfully")
+
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+            
+
+          
 
 
     
