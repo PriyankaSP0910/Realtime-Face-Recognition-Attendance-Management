@@ -6,6 +6,8 @@ from student import Student
 import numpy as np
 from tkinter import messagebox
 import mysql.connector
+from time import strftime
+from datetime import datetime
 import cv2
 from mysql.connector import Error
 
@@ -62,6 +64,21 @@ class Face_Recognition:
         fr=Button(fr_btn,text="Recognize Face",command=self.face_recog,width=46,font=("times new roman",19),bg="#1261A0",fg="white",cursor="hand2")
         fr.grid(row=9,column=4)
 
+
+        #Marking attendance function
+    def mark_attendance(self,c,s,n,i):
+        with open("attendance.csv","r+",newline="\n") as f:
+            myDataList=f.readlines()
+            name_list=[]
+            for line in myDataList:
+                entry=line.split((","))
+                name_list.append(entry[0])
+            if((c not in name_list) and (s not in name_list) and (n not in name_list) and (i not in name_list)):
+                now=datetime.now()
+                d1=now.strftime("%d/%m/%Y")
+                dtString=now.strftime("%H:%M:%S")
+                f.writelines(f"\n{c},{s},{n},{i},{dtString},{d1},Present")
+
     #Recognizing face function
     def face_recog(self):
         def draw_boundary(img,classifier,scaleFactor,minNeighbors,color,text,clf):
@@ -93,6 +110,8 @@ class Face_Recognition:
                 my_cursor.execute("select name from student_table where id="+str(id))
                 i=my_cursor.fetchone()
                 print(i)
+
+                self.mark_attendance(c,s,n,i)
 
        
 
@@ -140,4 +159,3 @@ if __name__== "__main__":   #used to call main
     root=Tk()       #Create an instance of tkinter window
     obj=Face_Recognition(root)
     root.mainloop()  #method will loop forever, waiting for events from the user, until the user exits the program 
-
